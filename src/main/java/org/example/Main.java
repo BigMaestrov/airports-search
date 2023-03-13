@@ -29,11 +29,11 @@ public class Main {
         System.out.print("Введите текст для запроса:"+"\n"+">>");
         String query = scanner.nextLine();
         String filePath = "./src/main/resources/airports.csv";
-        //Начало отсчета времени
-        long time = System.currentTimeMillis();
-        //Заполнения списка для вывода информации
         try{
-            List<Airport> airports = ParseProductCsv(filePath, query);
+            //Начало отсчета времени
+            long time = System.currentTimeMillis();
+            //Заполнения списка для вывода информации
+            List<Airport> airports = ParseProductCsv(filePath, query, columnNumber);
             for(int i = 0;i<airports.size();i++){
                 System.out.println(airports.get(i).toString());
             }
@@ -45,14 +45,16 @@ public class Main {
     }
 
     //Парсинг CSV файла по указанному пути и получение продуктов из него
-    private static List<Airport> ParseProductCsv(String filePath, String query) throws IOException {
-        //Загружаем строки из файла
+    private static List<Airport> ParseProductCsv(String filePath, String query, int columnNumber) throws IOException {
+        //Загрузка строк из файла
         List<Airport> airports = new ArrayList<Airport>();
         List<String> fileLines = Files.readAllLines(Paths.get(filePath));
+        //Цикл по строкам
         for (String fileLine : fileLines) {
             String[] splitedText = fileLine.split(",");
-            if((fileLine.split(query, -1).length - 1) > 0){
+            if((splitedText[columnNumber-1].split(query, -1).length - 1) > 0){
                 ArrayList<String> columnList = new ArrayList<String>();
+                //Цикл по колонкам
                 for (int i = 0; i < splitedText.length; i++) {
                     //Если колонка начинается на кавычки или заканчиваеться на кавычки
                     if (IsColumnPart(splitedText[i])) {
