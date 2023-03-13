@@ -3,4 +3,4 @@
 > mvn clean package
 
 Запуск проекта:
-> java -jar .\target\airports-search-1.jar "Номер колонки для поиска"
+> java -jar -Xmx7m .\target\airports-search-1.jar "Номер колонки для поиска"
