@@ -11,36 +11,39 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String userEnter = "";
-        if(args.length>0 && args[0].length()>0){
+        if (args.length > 0 && args[0].length() > 0) {
             userEnter = args[0];
         }
         int columnNumber;
         //Проверка входных параметров
-        while (!isDigit(userEnter)){
-            System.out.print("Введите корректный номер столбца:"+"\n"+">>");
+        while (!isDigit(userEnter)) {
+            System.out.print("Введите корректный номер столбца:" + "\n" + ">>");
             userEnter = scanner.nextLine();
         }
         columnNumber = Integer.parseInt(userEnter);
-        while (!(columnNumber>0 && columnNumber<15)){
-            System.out.print("Введите корректный номер столбца:"+"\n"+">>");
+        while (!(columnNumber > 0 && columnNumber < 15)) {
+            System.out.print("Введите корректный номер столбца:" + "\n" + ">>");
             columnNumber = Integer.parseInt(scanner.nextLine());
         }
-        //Пользовательский ввод запроса
-        System.out.print("Введите текст для запроса:"+"\n"+">>");
-        String query = scanner.nextLine();
-        String filePath = "./src/main/resources/airports.csv";
-        try{
-            //Начало отсчета времени
-            long time = System.currentTimeMillis();
-            //Заполнения списка для вывода информации
-            List<Airport> airports = ParseProductCsv(filePath, query, columnNumber);
-            for(int i = 0;i<airports.size();i++){
-                System.out.println(airports.get(i).toString());
+        String query = "";
+        while (!query.equals("!quit")) {
+            //Пользовательский ввод запроса
+            System.out.print("Введите текст для запроса:" + "\n" + ">>");
+            query = scanner.nextLine();
+            String filePath = "./src/main/resources/airports.csv";
+            try {
+                //Начало отсчета времени
+                long time = System.currentTimeMillis();
+                //Заполнения списка для вывода информации
+                List<Airport> airports = ParseProductCsv(filePath, query, columnNumber);
+                for (int i = 0; i < airports.size(); i++) {
+                    System.out.println(airports.get(i).toString());
+                }
+                //Конец отсчета времени
+                System.out.println((System.currentTimeMillis() - time) + " мс" + ", Найдено строк: " + airports.size());
+            } catch (Exception e) {
+                System.out.println(e);
             }
-            //Конец отсчета времени
-            System.out.println((System.currentTimeMillis() - time) + " мс" + ", Найдено строк: "+airports.size());
-        } catch (Exception e){
-            System.out.println(e);
         }
     }
 
@@ -52,7 +55,7 @@ public class Main {
         //Цикл по строкам
         for (String fileLine : fileLines) {
             String[] splitedText = fileLine.split(",");
-            if((splitedText[columnNumber-1].split(query, -1).length - 1) > 0){
+            if ((splitedText[columnNumber - 1].split(query, -1).length - 1) > 0) {
                 ArrayList<String> columnList = new ArrayList<String>();
                 //Цикл по колонкам
                 for (int i = 0; i < splitedText.length; i++) {
